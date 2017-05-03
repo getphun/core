@@ -1,0 +1,4 @@
+etc/cache/*
+!etc/cache/.gitkeep
+etc/log/*
+!etc/log/.gitkeep

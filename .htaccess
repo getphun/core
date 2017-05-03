@@ -1,0 +1,32 @@
+RewriteEngine on
+
+# RewriteCond %{HTTP_HOST} ^www\.cms\.phu [NC]
+# RewriteRule ^(.*)$ http://cms.phu/$1 [L,R=301]
+
+RedirectMatch 403 /\..*$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php
+
+# <IfModule mod_expires.c>
+#   ExpiresActive on
+# 
+#   ExpiresByType image/gif                 "access plus 9 month"
+#   ExpiresByType image/png                 "access plus 9 month"
+#   ExpiresByType image/jpg                 "access plus 9 month"
+#   ExpiresByType image/jpeg                "access plus 9 month"
+# 
+#   ExpiresByType text/css                  "access plus 2 months"
+#   ExpiresByType application/javascript    "access plus 2 months"
+#   ExpiresByType text/javascript           "access plus 2 months"
+# 
+#   <IfModule mod_headers.c>
+#     Header append Cache-Control "public"
+#   </IfModule>
+# 
+# </IfModule>
+
+# <IfModule deflate_module>
+#     # Enable compression for the following file types.
+#     AddOutputFilterByType DEFLATE application/javascript text/css text/html text/javascript text/plain text/xml
+# </IfModule>
