@@ -10,6 +10,8 @@ namespace Core\Library;
 
 class Router
 {
+    static $config;
+    
     static $routes;
     static $gates;
     
@@ -114,7 +116,7 @@ class Router
             self::$route = $routes['404'];
     }
     
-    static private function parseReqPath(){
+    static function parseReqPath(){
         $path = '/' . trim($_SERVER['REQUEST_URI'], '/');
         $path = preg_replace('!\?.+$!', '', $path);
         
@@ -181,8 +183,8 @@ class Router
         $config = include $config_cache_file;
         self::$routes = $config['routes'];
         self::$gates  = $config['gates'];
+        self::$config = $config;
         
-        self::parseReqPath();
         self::matchGates();
         self::matchRoutes();
         

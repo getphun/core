@@ -6,11 +6,14 @@
  * @upgrade true
  */
 
+use Core\Library\Router;
+
 class Phun
 {
     static $config;
-    static $service = [];
+    static $services = [];
     static $dispatcher = null;
+    static $req_params = [];
     
     static private function _autoload(){
         if(!isset(self::$config['_autoload']))
@@ -84,18 +87,70 @@ class Phun
         }
     }
     
+    static private function _resFromCache(){
+        if(ENVIRONMENT === 'development')
+            return;
+        
+        $cache_name  = Router::$req_path;
+        $query_cache = self::$config['query_cache'] ?? [];
+        $cache_query = [];
+        
+        foreach($query_cache as $name){
+            if(isset($_GET[$name]))
+                $cache_query[$name] = $_GET[$name];
+        }
+        
+        if($cache_query)
+            $cache_name.= '?' . http_build_query($cache_query);
+        $cache_name = 'req-' . md5($cache_name);
+        
+        $cache_file = BASEPATH . '/etc/cache/' . $cache_name;
+        if(!is_file($cache_file))
+            return;
+        
+        $cache = file_get_contents($cache_file);
+        $cache = unserialize($cache);
+        if($cache['expired'] < time()){
+            unlink($cache_file);
+            return;
+        }
+        
+        $content = $cache['content'];
+        
+        foreach($content['headers'] as $key => $value){
+            if(is_string($value))
+                header($key . ': ' . $value);
+            else{
+                foreach($value as $val)
+                    header($key . ': ' . $val);
+            }
+        }
+        
+        echo $content['content'];
+        exit;
+    }
+    
     static function run(){
         Phun::_env();
         Phun::_bootstrap();
         Phun::_config();
+        
+        self::$services = self::$config['_services'];
+        
         Phun::_autoload();
         
-        Core\Library\Router::run();
+        Router::parseReqPath();
         
-        $req_params = Core\Library\Router::$params;
-        $req_route  = Core\Library\Router::$route;
+        Phun::_resFromCache();
+        
+        Router::run();
+        
+        $req_params = Router::$params;
+        $req_route  = Router::$route;
         $req_ctrl   = $req_route['controller'];
         $req_action = $req_route['action'];
+        
+        self::$req_params = $req_params;
         
         try{
             self::$dispatcher = new $req_ctrl();

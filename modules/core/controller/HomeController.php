@@ -8,9 +8,13 @@
 
 namespace Core\Controller;
 
-class HomeController
+class HomeController extends \Controller
 {
     public function indexAction(){
-        echo 'Hello worlds';
+        $params = [
+            'greeting' => 'Let get some phun'
+        ];
+        
+        $this->respond('index', $params);
     }
 }

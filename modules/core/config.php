@@ -18,14 +18,28 @@ return [
         '.htaccess'     => ['install', 'remove'],
     ],
     
-    '_services' => [],
+    '_services' => [
+        'cache'         => 'Core\\Service\\Cache',
+        'config'        => 'Core\\Service\\Config',
+        'param'         => 'Core\\Service\\Param',
+        'req'           => 'Core\\Service\\Request',
+        'res'           => 'Core\\Service\\Response',
+        'router'        => 'Core\\Service\\Router'
+    ],
     '_autoload' => [
-        'classes' => [
-            'Core\\Library\\Router'     => 'modules/core/library/Router.php',
-            
-            'Core\\Controller\\HomeController'    => 'modules/core/controller/HomeController.php'
+        'classes'       => [
+            'Controller'                        => 'modules/core/library/Controller.php',
+            'Core\\Controller\\HomeController'  => 'modules/core/controller/HomeController.php',
+            'Core\\Library\\Router'             => 'modules/core/library/Router.php',
+            'Core\\Library\\View'               => 'modules/core/library/View.php',
+            'Core\\Service\\Cache'              => 'modules/core/service/Cache.php',
+            'Core\\Service\\Config'             => 'modules/core/service/Config.php',
+            'Core\\Service\\Param'              => 'modules/core/service/Param.php',
+            'Core\\Service\\Request'            => 'modules/core/service/Request.php',
+            'Core\\Service\\Response'           => 'modules/core/service/Response.php',
+            'Core\\Service\\Router'             => 'modules/core/service/Router.php'
         ],
-        'files'   => [
+        'files'         => [
             'core-helper-devel' => 'modules/core/helper/devel.php'
         ]
     ]
