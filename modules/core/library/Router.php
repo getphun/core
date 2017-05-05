@@ -22,12 +22,10 @@ class Router
     static $params_host = [];
     static $params_path = [];
     
-    static $req_path;
-    
     static private function matchGates(){
         $host = $_SERVER['SERVER_NAME'];
         $host_arr = explode('.', $host);
-        $path = self::$req_path;
+        $path = \Phun::$req_uri;
         
         foreach(self::$gates as $name => $gate){
         
@@ -72,7 +70,7 @@ class Router
     }
     
     static private function matchRoutes(){
-        $path = self::$req_path;
+        $path = \Phun::$req_uri;
         $path_arr = explode('/', $path);
         
         $routes = self::$routes[self::$gate];
@@ -114,13 +112,6 @@ class Router
         
         if(!self::$route)
             self::$route = $routes['404'];
-    }
-    
-    static function parseReqPath(){
-        $path = '/' . trim($_SERVER['REQUEST_URI'], '/');
-        $path = preg_replace('!\?.+$!', '', $path);
-        
-        self::$req_path = $path;
     }
     
     static function run(){

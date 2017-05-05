@@ -14,6 +14,7 @@ class Phun
     static $services = [];
     static $dispatcher = null;
     static $req_params = [];
+    static $req_uri = '';
     
     static private function _autoload(){
         if(!isset(self::$config['_autoload']))
@@ -87,11 +88,18 @@ class Phun
         }
     }
     
+    static function _uri(){
+        $path = '/' . trim($_SERVER['REQUEST_URI'], '/');
+        $path = preg_replace('!\?.+$!', '', $path);
+        
+        self::$req_uri = $path;
+    }
+    
     static private function _resFromCache(){
         if(ENVIRONMENT === 'development')
             return;
         
-        $cache_name  = Router::$req_path;
+        $cache_name  = self::$req_uri;
         $query_cache = self::$config['query_cache'] ?? [];
         $cache_query = [];
         
@@ -134,15 +142,12 @@ class Phun
         Phun::_env();
         Phun::_bootstrap();
         Phun::_config();
+        Phun::_uri();
+        Phun::_resFromCache();
         
         self::$services = self::$config['_services'];
         
         Phun::_autoload();
-        
-        Router::parseReqPath();
-        
-        Phun::_resFromCache();
-        
         Router::run();
         
         $req_params = Router::$params;

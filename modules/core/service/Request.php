@@ -15,7 +15,7 @@ class Request
     
     public function __construct(){
         $this->method = $this->getServer('REQUEST_METHOD');
-        $this->uri = \Core\Library\Router::$req_path;
+        $this->uri = \Phun::$req_uri;
     }
     
     public function get($name, $def=null){
