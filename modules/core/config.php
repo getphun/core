@@ -9,7 +9,7 @@
 return [
     '__name' => 'core',
     '__version' => '0.0.1',
-    '__git' => 'https://github.com/phun/core',
+    '__git' => 'https://github.com/getphun/core',
     
     '__files' => [
         'modules/core'  => ['install', 'remove', 'update'],
