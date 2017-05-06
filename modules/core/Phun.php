@@ -31,6 +31,9 @@ class Phun
             
             $file = Phun::$config['_autoload']['classes'][$class];
             include BASEPATH . '/' . $file;
+            
+            if(method_exists($class, '__init'))
+                $class::__init();
         });
     }
     
