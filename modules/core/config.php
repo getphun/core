@@ -12,10 +12,12 @@ return [
     '__git' => 'https://github.com/getphun/core',
     
     '__files' => [
-        'modules/core'  => ['install', 'remove', 'update'],
-        'index.php'     => ['install', 'remove', 'update'],
-        'etc'           => ['install', 'remove'],
-        '.htaccess'     => ['install', 'remove'],
+        'modules/core'                  => ['install', 'remove', 'update'],
+        'index.php'                     => ['install', 'remove', 'update'],
+        'etc'                           => ['install', 'remove'],
+        '.htaccess'                     => ['install', 'remove'],
+        'theme/site/index.phtml'        => ['install', 'remove'],
+        'theme/site/static/.gitkeep'    => ['install', 'remove']
     ],
     
     '_services' => [

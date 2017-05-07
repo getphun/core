@@ -46,6 +46,15 @@ function is_dev(){
 }
 
 /**
+ * Check if arary is indexed 
+ * @param array $arr
+ * @return boolean true on indexed array
+ */
+function is_indexed_array($arr){
+    return array_keys($arr) === range(0, count($arr)-1);
+}
+
+/**
  * Short-hand for htmlspecialchars
  * @param string str The string to encode
  * @return string encoded $str
