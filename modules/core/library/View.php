@@ -45,4 +45,8 @@ class View
         $theme_file = $this->base . '/' . $view . '.phtml';
         include $theme_file;
     }
+    
+    public function __get($name){
+        return \Phun::$dispatcher->$name;
+    }
 }
