@@ -38,6 +38,15 @@ function deb(){
 }
 
 /**
+ * Short-hand for htmlspecialchars
+ * @param string str The string to encode
+ * @return string encoded $str
+ */
+function hs($str){
+    return htmlspecialchars($str, ENT_QUOTES);
+}
+
+/**
  * Check if current env is development
  * @return boolean true on dev~ false otherwise.
  */
@@ -55,10 +64,10 @@ function is_indexed_array($arr){
 }
 
 /**
- * Short-hand for htmlspecialchars
- * @param string str The string to encode
- * @return string encoded $str
+ * Check if module exists
+ * @param string name The module name.
+ * @return boolean true on exists, false otherwise
  */
-function hs($str){
-    return htmlspecialchars($str, ENT_QUOTES);
+function module_exists($name){
+    return is_dir( BASEPATH . '/modules/' . $name );
 }
