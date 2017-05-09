@@ -13,37 +13,56 @@ class Cache
     protected $memory = [];
     
     public function get($name){
-        $cache_file = BASEPATH . '/etc/cache/' . $name;
+        $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         if(!is_file($cache_file))
             return null;
-        
-        $ctn = file_get_contents($cache_file);
-        $ctn = unserialize($ctn);
-        
-        if($ctn['expired'] < time()){
-            unlink($cache_file);
-            return null;
-        }
-        
-        return $ctn['content'];
+        return include $cache_file;
     }
     
     public function remove($name){
-        $cache_file = BASEPATH . '/etc/cache/' . $name;
+        $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         if(is_file($cache_file))
-            unlink($cache_file);
-        return true;
+            return unlink($cache_file);
     }
     
     public function save($name, $content, $expiration){
-        $ctn = [
-            'content' => $content,
-            'expired' => time() + $expiration
-        ];
+        $nl = PHP_EOL;
+        $expired = time() + $expiration;
         
-        $cache_file = BASEPATH . '/etc/cache/' . $name;
+        $tx = '<?php' . $nl . $nl;
+        $tx.= 'if(time() > ' . $expired . ')' . $nl;
+        $tx.= '    return !unlink(__FILE__);' . $nl;
+        $tx.= 'return ' . var_export($content, true) . ';';
+        
+        $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         $f = fopen($cache_file, 'w');
-        fwrite($f, serialize($ctn));
+        fwrite($f, $tx);
+        fclose($f);
+        
+        return true;
+    }
+    
+    public function save_output($name, $res, $expiration){
+        $nl = PHP_EOL;
+        $expired = time() + $expiration;
+        
+        $tx = '<?php' . $nl . $nl;
+        $tx.= 'if(time() > ' . $expired . ')' . $nl;
+        $tx.= '    return unlink(__FILE__);' . $nl . $nl;
+        
+        foreach($res['headers'] as $key => $value){
+            if(is_string($value))
+                $tx.= 'header(\'' . $key . ': ' . $value . '\');' . $nl;
+            elseif(is_array($value)){
+                foreach($value as $val)
+                    $tx.= 'header(\'' . $key . ': ' . $val . '\');' . $nl;
+            }
+        }
+        $tx.= '?>' . $res['content'] . '<?php exit; ?>';
+        
+        $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
+        $f = fopen($cache_file, 'w');
+        fwrite($f, $tx);
         fclose($f);
         
         return true;

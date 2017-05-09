@@ -85,7 +85,7 @@ class Response
         
         if($this->cache){
             $cache = $this->cache;
-            \Phun::$dispatcher->cache->save($cache['name'], $this->res, $cache['expired']);
+            \Phun::$dispatcher->cache->save_output($cache['name'], $this->res, $cache['expired']);
         }
         
         $this->_sendHeader();

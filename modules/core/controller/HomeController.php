@@ -15,6 +15,6 @@ class HomeController extends \Controller
             'greeting' => 'Let get some phun'
         ];
         
-        $this->respond('index', $params);
+        $this->respond('index', $params, 10);
     }
 }

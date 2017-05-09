@@ -113,32 +113,13 @@ class Phun
         
         if($cache_query)
             $cache_name.= '?' . http_build_query($cache_query);
-        $cache_name = 'req-' . md5($cache_name);
+        $cache_name = 'req-' . md5($cache_name) . '.php';
         
         $cache_file = BASEPATH . '/etc/cache/' . $cache_name;
         if(!is_file($cache_file))
             return;
         
-        $cache = file_get_contents($cache_file);
-        $cache = unserialize($cache);
-        if($cache['expired'] < time()){
-            unlink($cache_file);
-            return;
-        }
-        
-        $content = $cache['content'];
-        
-        foreach($content['headers'] as $key => $value){
-            if(is_string($value))
-                header($key . ': ' . $value);
-            else{
-                foreach($value as $val)
-                    header($key . ': ' . $val);
-            }
-        }
-        
-        echo $content['content'];
-        exit;
+        include $cache_file;
     }
     
     static function run(){

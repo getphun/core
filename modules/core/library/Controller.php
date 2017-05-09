@@ -38,7 +38,7 @@ class Controller
         $this->res->render(Router::$gate, $view, $params);
         
         if($cache){
-            $cache_name  = Router::$req_path;
+            $cache_name  = Phun::$req_uri;
             $query_cache = $this->config->query_cache ?? [];
             $cache_query = [];
             
