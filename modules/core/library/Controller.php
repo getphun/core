@@ -57,6 +57,23 @@ class Controller
         $this->res->send();
     }
     
+    /**
+     * Global show 404
+     */
+    public function show404(){
+        $gate = Router::$gate;
+        $routes = Phun::$config['_routes'][$gate];
+        if(!isset($routes['404']))
+            return $this->ajax(['error'=>'404']);
+        
+        $route = $routes['404'];
+        
+        $handler = explode('::', $route['handler']);
+        $cls = $handler[0] . 'Controller';
+        $disp = new $cls();
+        $disp->{$handler[1] . 'Action'}();
+    }
+    
     public function __get($name){
         // services?
         if(is_string(Phun::$services[$name])){

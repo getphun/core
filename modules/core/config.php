@@ -17,6 +17,7 @@ return [
         'etc'                           => ['install', 'remove'],
         '.htaccess'                     => ['install', 'remove'],
         'theme/site/index.phtml'        => ['install', 'remove'],
+        'theme/site/404.phtml'          => ['install', 'remove'],
         'theme/site/static/.gitkeep'    => ['install', 'remove']
     ],
     

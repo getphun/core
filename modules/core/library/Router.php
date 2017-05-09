@@ -141,6 +141,9 @@ class Router
             // format routes
             $routes = \Phun::$config['_routes'];
             foreach($routes as $gate => $rous){
+                if(!isset($gates[$gate]))
+                    throw new \Exception('Gate named `' . $gate . '` is not registered');
+                
                 $gate_path = $gates[$gate]['path'];
                 
                 foreach($rous as $name => $route){
