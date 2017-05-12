@@ -23,8 +23,10 @@ class Router
         
         $result.= $route['rule'];
         
-        foreach($args as $name => $value)
-            $result = str_replace(':' . $name, $value, $result);
+        foreach($args as $name => $value){
+            if(is_string($value) || is_numeric($value))
+                $result = str_replace(':' . $name, $value, $result);
+        }
         
         return $result;
     }
