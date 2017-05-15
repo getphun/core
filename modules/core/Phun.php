@@ -145,6 +145,7 @@ class Phun
             self::$dispatcher = new $req_ctrl();
             self::$dispatcher->$req_action();
         }catch(Exception $e){
+            http_response_code(500);
             echo $e->getMessage();
             echo '<pre>';
             echo $e->getTraceAsString();
