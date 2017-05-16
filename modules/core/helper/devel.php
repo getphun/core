@@ -38,6 +38,23 @@ function deb(){
 }
 
 /**
+ * Group array by property
+ * @param array arr The array
+ * @param string prop The property to set as group
+ * @return array
+ */
+function group_by_prop($arr, $prop){
+    $result = [];
+    foreach($arr as $ar){
+        $ar = (object)$ar;
+        if(!isset($result[$ar->$prop]))
+            $result[$ar->$prop] = [];
+        $result[$ar->$prop][] = $ar;
+    }
+    return $result;
+}
+
+/**
  * Short-hand for htmlspecialchars
  * @param string str The string to encode
  * @return string encoded $str
