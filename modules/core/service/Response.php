@@ -48,7 +48,7 @@ class Response
     }
     
     public function addCookie($name, $value, $expiration){
-        setcookie($name, $value, time() + $expiration);
+        setcookie($name, $value, time() + $expiration, '/');
     }
     
     public function addHeader(String $name, $content){
