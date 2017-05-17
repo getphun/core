@@ -94,6 +94,7 @@ class Phun
     static function _uri(){
         $path = '/' . trim($_SERVER['REQUEST_URI'], '/');
         $path = preg_replace('!\?.+$!', '', $path);
+        $path = chop($path, '/');
         
         self::$req_uri = $path;
     }
@@ -145,7 +146,6 @@ class Phun
             self::$dispatcher = new $req_ctrl();
             self::$dispatcher->$req_action();
         }catch(Exception $e){
-            http_response_code(500);
             echo $e->getMessage();
             echo '<pre>';
             echo $e->getTraceAsString();
