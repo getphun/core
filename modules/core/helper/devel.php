@@ -98,4 +98,5 @@ function module_exists($name){
 function object_replace($origin, $new){
     foreach($new as $prop => $value)
         $origin->$prop = $value;
+    return $origin;
 }
