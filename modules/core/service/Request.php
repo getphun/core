@@ -12,6 +12,7 @@ class Request
 {
     public $method = 'GET';
     public $uri = '/';
+    public $ip = '';
     
     public function __construct(){
         $this->method = $this->getServer('REQUEST_METHOD');
@@ -35,6 +36,28 @@ class Request
     
     public function getFile($name){
         return $_FILES[$name] ?? null;
+    }
+    
+    public function getIP(){
+        if($this->ip)
+            return $this->ip;
+        
+        if (getenv('HTTP_CLIENT_IP'))
+            $this->ip = getenv('HTTP_CLIENT_IP');
+        else if(getenv('HTTP_X_FORWARDED_FOR'))
+            $this->ip = getenv('HTTP_X_FORWARDED_FOR');
+        else if(getenv('HTTP_X_FORWARDED'))
+            $this->ip = getenv('HTTP_X_FORWARDED');
+        else if(getenv('HTTP_FORWARDED_FOR'))
+            $this->ip = getenv('HTTP_FORWARDED_FOR');
+        else if(getenv('HTTP_FORWARDED'))
+        $this->ip = getenv('HTTP_FORWARDED');
+        else if(getenv('REMOTE_ADDR'))
+            $this->ip = getenv('REMOTE_ADDR');
+        else
+            $this->ip = 'UNKNOWN';
+        
+        return $this->ip;
     }
     
     public function getPost($name, $def=null){
