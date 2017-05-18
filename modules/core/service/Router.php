@@ -11,7 +11,7 @@ namespace Core\Service;
 class Router
 {
 
-    public function to($name, $args=[]){
+    public function to($name, $args=[], $query=false){
         $config = \Core\Library\Router::$config;
         $gate_name = $config['_name_gate'][$name];
         $gate = $config['gates'][$gate_name];
@@ -27,6 +27,9 @@ class Router
             if(is_string($value) || is_numeric($value))
                 $result = str_replace(':' . $name, $value, $result);
         }
+        
+        if($query)
+            $result.= '?' . http_build_query($query);
         
         return $result;
     }
