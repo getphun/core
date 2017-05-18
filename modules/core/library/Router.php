@@ -82,6 +82,8 @@ class Router
                 continue;
             
             if(isset($route['rule_arr'])){
+                $temp_route = '';
+                
                 foreach($route['rule_arr'] as $index => $part){
                     if(!array_key_exists($index, $path_arr)){
                         self::$params_path = [];
@@ -98,6 +100,15 @@ class Router
                             continue 2;
                         }
                     }
+                    
+                    $temp_route[] = $path_arr[$index];
+                }
+                
+                $temp_route = implode('/', $temp_route);
+                
+                if($temp_route != $path){
+                    self::$params_path = [];
+                    continue;
                 }
                 
                 self::$route = $route;
