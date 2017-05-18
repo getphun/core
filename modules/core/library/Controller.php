@@ -29,6 +29,18 @@ class Controller
     }
     
     /**
+     * Redirect to some router URL
+     * @param string $name Router name
+     * @param array $args Router args
+     * @param array $query Router query
+     * @param integer $code HTTP Status code, default 302
+     */
+    public function redirectUrl($name, $args=[], $query=[], $code=302){
+        $url = $this->router->to($name, $args, $query);
+        $this->redirect($url, $code);
+    }
+    
+    /**
      * Render and send view
      * @param string $view The view path relative to gate theme
      * @param array $params Data to send to view on rendering
