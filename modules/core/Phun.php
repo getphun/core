@@ -125,10 +125,15 @@ class Phun
         include $cache_file;
     }
     
+    static function _timezone(){
+        date_default_timezone_set('Asia/Jakarta');
+    }
+    
     static function run(){
         Phun::_env();
         Phun::_bootstrap();
         Phun::_config();
+        Phun::_timezone();
         Phun::_uri();
         Phun::_resFromCache();
         
