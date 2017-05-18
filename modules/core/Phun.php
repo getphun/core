@@ -93,11 +93,11 @@ class Phun
     
     static function _uri(){
         $path = '/' . trim($_SERVER['REQUEST_URI'], '/');
-        $path = preg_replace('!\?.+$!', '', $path);
+        $path = preg_replace('!\?.*$!', '', $path);
         $path = chop($path, '/');
         if(!$path)
             $path = '/';
-        
+            
         self::$req_uri = $path;
     }
     
