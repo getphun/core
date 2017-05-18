@@ -88,3 +88,14 @@ function is_indexed_array($arr){
 function module_exists($name){
     return is_dir( BASEPATH . '/modules/' . $name );
 }
+
+/**
+ * Replace two object
+ * @param object $source
+ * @param object $new
+ * @return replaced props
+ */
+function object_replace($origin, $new){
+    foreach($new as $prop => $value)
+        $origin->$prop = $value;
+}
