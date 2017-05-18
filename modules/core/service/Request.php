@@ -16,6 +16,10 @@ class Request
     public function __construct(){
         $this->method = $this->getServer('REQUEST_METHOD');
         $this->uri = \Phun::$req_uri;
+        $this->url = $this->getServer('REQUEST_SCHEME')
+                   . '://'
+                   . $this->getServer('HTTP_HOST')
+                   . $this->getServer('REQUEST_URI');
     }
     
     public function get($name, $def=null){
