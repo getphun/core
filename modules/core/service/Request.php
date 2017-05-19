@@ -24,8 +24,8 @@ class Request
     }
     
     public function get($name, $def=null){
-        return $this->getQuery($name)
-            ?? $this->getPost($name)
+        return $this->getPost($name)
+            ?? $this->getQuery($name)
             ?? $this->getFile($name)
             ?? $def;
     }
