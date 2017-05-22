@@ -71,4 +71,13 @@ class Cache
     public function total(){
         return count( array_diff( scandir( BASEPATH . '/etc/cache/' ), ['.','..','.gitkeep'] ) );
     }
+    
+    public function truncate(){
+        $files = array_diff( scandir( BASEPATH . '/etc/cache/' ), ['.', '..', '.gitkeep'] );
+        foreach($files as $file){
+            $file_abs = BASEPATH . '/etc/cache/' . $file;
+            if(is_file($file_abs))
+                unlink($file_abs);
+        }
+    }
 }
