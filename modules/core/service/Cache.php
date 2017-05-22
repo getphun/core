@@ -67,4 +67,8 @@ class Cache
         
         return true;
     }
+    
+    public function total(){
+        return count( array_diff( scandir( BASEPATH . '/etc/cache/' ), ['.','..','.gitkeep'] ) );
+    }
 }
