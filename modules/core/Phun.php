@@ -154,9 +154,11 @@ class Phun
             self::$dispatcher->$req_action();
         }catch(Exception $e){
             echo $e->getMessage();
-            echo '<pre>';
-            echo $e->getTraceAsString();
-            echo '</pre>';
+            if(ENVIRONMENT == 'development'){
+                echo '<pre>';
+                echo $e->getTraceAsString();
+                echo '</pre>';
+            }
         }
     }
 }
