@@ -23,7 +23,7 @@ return [
     
     '_server' => [
         'Nginx or Apache'   => 'Core\\Library\\Server::software',
-        'PHP > 7.0.0'       => 'Core\\Library\\Server::php'
+        'PHP >= 7.0.0'      => 'Core\\Library\\Server::php'
     ],
     
     '_services' => [
