@@ -126,7 +126,7 @@ class Phun
     }
     
     static function _timezone(){
-        date_default_timezone_set('Asia/Jakarta');
+        date_default_timezone_set(self::$config['timezone']);
     }
     
     static function run(){

@@ -10,6 +10,7 @@ return [
     'name' => 'Phun',
     'version' => '0.0.1',
     'host' => 'cms.phu',
+    'timezone' => 'Asia/Jakarta',
     
     '_gates' => [
         'site' => [
