@@ -11,12 +11,37 @@ namespace Core\Service;
 class Cache
 {
     protected $memory = [];
+    protected $output_name;
     
     public function get($name){
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         if(!is_file($cache_file))
             return null;
         return include $cache_file;
+    }
+    
+    public function getOutputName(){
+        if($this->output_name)
+            return $this->output_name;
+        
+        $dis = \Phun::$dispatcher;
+        
+        $cache_name  = \Phun::$req_uri;
+        $query_cache = $dis->config->query_cache ?? [];
+        $cache_query = [];
+        
+        foreach($query_cache as $name){
+            if($dis->req->getQuery($name))
+                $cache_query[$name] = $dis->req->getQuery($name);
+        }
+        
+        if($cache_query)
+            $cache_name.= '?' . http_build_query($cache_query);
+        
+        $cache_name = 'req-' . md5($cache_name);
+        
+        $this->output_name = $cache_name;
+        return $cache_name;
     }
     
     public function remove($name){
@@ -42,9 +67,11 @@ class Cache
         return true;
     }
     
-    public function save_output($name, $res, $expiration){
+    public function save_output($res, $expiration){
         $nl = PHP_EOL;
         $expired = time() + $expiration;
+        
+        $name = $this->getOutputName();
         
         $tx = '<?php' . $nl . $nl;
         $tx.= 'if(time() > ' . $expired . ')' . $nl;

@@ -49,22 +49,8 @@ class Controller
     public function respond($view, $params=[], $cache=null){
         $this->res->render(Router::$gate, $view, $params);
         
-        if($cache){
-            $cache_name  = Phun::$req_uri;
-            $query_cache = $this->config->query_cache ?? [];
-            $cache_query = [];
-            
-            foreach($query_cache as $name){
-                if($this->req->getQuery($name))
-                    $cache_query[$name] = $this->req->getQuery($name);
-            }
-            
-            if($cache_query)
-                $cache_name.= '?' . http_build_query($cache_query);
-            $cache_name = 'req-' . md5($cache_name);
-            
-            $this->res->cache($cache_name, $cache);
-        }
+        if($cache)
+            $this->res->cache($cache);
         
         $this->res->send();
     }

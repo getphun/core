@@ -12,7 +12,7 @@ use Core\Library\View;
 class Response
 {
     
-    private $cache = [];
+    private $cache = 0;
     
     private $res = [
         'cookies' => [],
@@ -55,14 +55,8 @@ class Response
         $this->res['headers'][$name] = $content;
     }
     
-    public function cache(String $name, $expiration){
-        if(!$name)
-            return ($this->cache = []);
-        
-        $this->cache = [
-            'name'    => $name,
-            'expired' => $expiration
-        ];
+    public function cache($expiration){
+        $this->cache = $expiration;
     }
     
     public function redirect(String $url, $code=302){
@@ -83,10 +77,8 @@ class Response
         if($content)
             $this->res['content'] = $content;
         
-        if($this->cache){
-            $cache = $this->cache;
-            \Phun::$dispatcher->cache->save_output($cache['name'], $this->res, $cache['expired']);
-        }
+        if($this->cache)
+            \Phun::$dispatcher->cache->save_output($this->res, $this->cache);
         
         $this->_sendHeader();
         $this->_sendContent();
