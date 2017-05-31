@@ -11,6 +11,7 @@ return [
     'version' => '0.0.1',
     'host' => 'cms.phu',
     'timezone' => 'Asia/Jakarta',
+    'install' => '2017-05-31 01:05:00',
     
     '_gates' => [
         'site' => [
