@@ -11,6 +11,10 @@ namespace Core\Service;
 class Router
 {
 
+    public function exists($name){
+        return isset( \Core\Library\Router::$config['_name_gate'][$name] );
+    }
+    
     public function to($name, $args=[], $query=false){
         $config = \Core\Library\Router::$config;
         $gate_name = $config['_name_gate'][$name];
