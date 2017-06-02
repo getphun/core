@@ -71,8 +71,10 @@ class Response
     }
     
     public function send($content=null, $headers=[]){
-        if($headers)
-            $this->res['headers'] = $headers;
+        if($headers){
+            foreach($headers as $name => $value)
+                $this->addHeader($name, $value);
+        }
         
         if($content)
             $this->res['content'] = $content;
