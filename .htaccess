@@ -1,13 +1,24 @@
 RewriteEngine on
 
+## Redirect to non www from www-ed
 # RewriteCond %{HTTP_HOST} ^www\.cms\.phu [NC]
 # RewriteRule ^(.*)$ http://cms.phu/$1 [L,R=301]
+
+## Redirect to https from http
+# RewriteCond %{HTTPS} !on [NC]
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
 RedirectMatch 403 /\..*$
 RewriteCond %{REQUEST_FILENAME} !-f
 # RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
 
+## Back to index for direct access of phtml
+RewriteRule ^(.*)\.phtml /index.php
+
+RewriteRule ^(.+)/.+\.php /index.php
+
+## Cache static files
 # <IfModule mod_expires.c>
 #   ExpiresActive on
 # 
@@ -26,6 +37,7 @@ RewriteRule . index.php
 # 
 # </IfModule>
 
+## Compress Static files
 # <IfModule deflate_module>
 #     # Enable compression for the following file types.
 #     AddOutputFilterByType DEFLATE application/javascript text/css text/html text/javascript text/plain text/xml
