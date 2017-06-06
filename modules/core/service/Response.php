@@ -86,4 +86,9 @@ class Response
         $this->_sendContent();
         exit;
     }
+    
+    // this won't included on caches
+    public function setStatus($status){
+        http_response_code($status);
+    }
 }
