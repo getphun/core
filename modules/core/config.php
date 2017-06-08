@@ -50,7 +50,8 @@ return [
             'Core\\Service\\Router'             => 'modules/core/service/Router.php'
         ],
         'files'         => [
-            'core-helper-devel' => 'modules/core/helper/devel.php'
+            'modules/core/helper/devel.php',
+            'modules/core/helper/page.php'
         ]
     ]
     
