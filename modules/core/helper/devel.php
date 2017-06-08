@@ -100,3 +100,22 @@ function object_replace($origin, $new){
         $origin->$prop = $value;
     return $origin;
 }
+
+/**
+ * Set object/array property as array/object key 
+ * @param array $arr The array to proc
+ * @param string $prop the property name to set as array key
+ */
+function prop_as_key($arr, $prop){
+    $result = [];
+    
+    $is_obj = end($arr);
+    $is_obj = is_object($is_obj);
+    
+    foreach($arr as $ar){
+        $key = $is_obj ? $ar->$prop : $ar[$prop];
+        $result[$key] = $arr;
+    }
+    
+    return $result;
+}
