@@ -114,7 +114,7 @@ function prop_as_key($arr, $prop){
     
     foreach($arr as $ar){
         $key = $is_obj ? $ar->$prop : $ar[$prop];
-        $result[$key] = $arr;
+        $result[$key] = $ar;
     }
     
     return $result;
