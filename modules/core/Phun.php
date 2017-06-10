@@ -15,6 +15,7 @@ class Phun
     static $dispatcher = null;
     static $req_params = [];
     static $req_uri = '';
+    static $req_url = '';
     
     static private function _autoload(){
         if(!isset(self::$config['_autoload']))
@@ -99,13 +100,14 @@ class Phun
             $path = '/';
             
         self::$req_uri = $path;
+        self::$req_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $path;
     }
     
     static private function _resFromCache(){
         if(ENVIRONMENT === 'development')
             return;
         
-        $cache_name  = self::$req_uri;
+        $cache_name  = self::$req_url;
         $query_cache = self::$config['query_cache'] ?? [];
         $cache_query = [];
         

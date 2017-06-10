@@ -26,7 +26,7 @@ class Cache
         
         $dis = \Phun::$dispatcher;
         
-        $cache_name  = \Phun::$req_uri;
+        $cache_name  = \Phun::$req_url;
         $query_cache = $dis->config->query_cache ?? [];
         $cache_query = [];
         
@@ -48,6 +48,11 @@ class Cache
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         if(is_file($cache_file))
             return unlink($cache_file);
+    }
+    
+    public function removeOutput($page){
+        $cache_name = 'req-' . md5($page);
+        $this->remove($cache_name);
     }
     
     public function save($name, $content, $expiration){
