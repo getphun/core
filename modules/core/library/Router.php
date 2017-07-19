@@ -177,6 +177,16 @@ class Router
                 }
             }
             
+            // sort by priority
+            foreach($routes as $name => $route){
+                uasort($route, function($a, $b){
+                    $ap = $a['priority'] ?? 1000000;
+                    $bp = $b['priority'] ?? 1000000;
+                    return $bp - $ap;
+                });
+                $routes[$name] = $route;
+            }
+            
             $config['routes'] = $routes;
             
             $tx = '<?php' . PHP_EOL;

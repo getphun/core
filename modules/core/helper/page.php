@@ -36,9 +36,7 @@ function calculate_pagination($page, $rpp, $total, $pts=10, $conds=[], $prev_lab
     
     $prev = $page - 1;
     if($prev < 1)
-        $prev = '#';
-    if($prev == '#')
-        $result[$prev_label] = ($prev=='#'?'#':'?page='.$prev);
+        $result[$prev_label] = '#';
     else{
         $cond_qry = $conds;
         $cond_qry['page'] = $prev;
@@ -58,8 +56,6 @@ function calculate_pagination($page, $rpp, $total, $pts=10, $conds=[], $prev_lab
     
     $next = $page + 1;
     if($next > $total_page)
-        $next = '#';
-    if($next == '#')
         $result[$next_label] = '#';
     else{
         $cond_qry = $conds;
