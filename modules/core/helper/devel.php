@@ -90,6 +90,16 @@ function module_exists($name){
 }
 
 /**
+ * Check if autoload class exists
+ * @param string name The class name.
+ * @return boolean true on exists, false otherwise
+ */
+function autoload_class_exists($name){
+    $dis = \Phun::$dispatcher;
+    return isset($dis->config->_autoload[$name]);
+}
+
+/**
  * Replace two object
  * @param object $source
  * @param object $new
