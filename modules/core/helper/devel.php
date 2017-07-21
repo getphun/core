@@ -96,7 +96,7 @@ function module_exists($name){
  */
 function autoload_class_exists($name){
     $dis = \Phun::$dispatcher;
-    return isset($dis->config->_autoload[$name]);
+    return isset($dis->config->_autoload['classes'][$name]);
 }
 
 /**
