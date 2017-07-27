@@ -48,7 +48,8 @@ class Response
     }
     
     public function addCookie($name, $value, $expiration){
-        setcookie($name, $value, time() + $expiration, '/');
+        $host = \Phun::$dispatcher->config->host;
+        setcookie($name, $value, time() + $expiration, '/', $host);
     }
     
     public function addHeader(String $name, $content){
