@@ -62,7 +62,11 @@ class Cache
         $tx = '<?php' . $nl . $nl;
         $tx.= 'if(time() > ' . $expired . ')' . $nl;
         $tx.= '    return !unlink(__FILE__);' . $nl;
-        $tx.= 'return ' . var_export($content, true) . ';';
+        
+        $php = var_export($content, true);
+        $php = str_replace('stdClass::__set_state', '(object)', $php); // Hope my mom never find this.
+        
+        $tx.= 'return ' . $php . ';';
         
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         $f = fopen($cache_file, 'w');
