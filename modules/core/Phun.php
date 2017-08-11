@@ -69,7 +69,12 @@ class Phun
         }
         
         $module_configs = include $config_cache_file;
-        $app_config     = include BASEPATH . '/etc/config.php';
+        
+        // get env config
+        $env_config     = BASEPATH . '/etc/config.' . ENVIRONMENT . '.php';
+        if(!is_file($env_config))
+            $env_config = BASEPATH . '/etc/config.php';
+        $app_config     = include $env_config;
         
         $config = array_replace_recursive($module_configs, $app_config);
         
