@@ -76,6 +76,9 @@ class Phun
             $env_config = BASEPATH . '/etc/config.php';
         $app_config     = include $env_config;
         
+        if(!is_array($app_config))
+            $app_config = [];
+        
         $config = array_replace_recursive($module_configs, $app_config);
         
         self::$config = $config;
