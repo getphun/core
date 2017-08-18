@@ -79,6 +79,23 @@ class Phun
         if(!is_array($app_config))
             $app_config = [];
         
+        // preset _gates
+        if(!isset($app_config['_gates']['site']))
+            $app_config['_gates']['site'] = ['path' => '/'];
+        
+        // preset routes
+        if(!isset($app_config['_routes']['site']['404'])){
+            $app_config['_routes']['site']['404'] = [
+                'handler' => 'Core\\Controller\\Home::notFound'
+            ];
+        }
+        if(!isset($app_config['_routes']['site']['siteHome'])){
+            $app_config['_routes']['site']['siteHome'] = [
+                'rule'    => '/',
+                'handler' => 'Core\\Controller\\Home::index'
+            ];
+        }
+        
         $config = array_replace_recursive($module_configs, $app_config);
         
         self::$config = $config;

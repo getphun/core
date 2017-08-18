@@ -13,23 +13,8 @@ return [
     'timezone' => 'Asia/Jakarta',
     'install' => '2017-05-31 01:05:00',
     
-    '_gates' => [
-        'site' => [
-            'path' => '/'
-        ]
-    ],
-    
-    '_routes' => [
-        'site' => [
-            '404' => [
-                'handler' => 'Core\\Controller\\Home::notFound'
-            ],
-            'siteHome' => [
-                'rule' => '/',
-                'handler' => 'Core\\Controller\\Home::index'
-            ]
-        ]
-    ],
+    '_gates' => [],
+    '_routes' => [],
     
     'query_cache' => [
         'page', 'library'
