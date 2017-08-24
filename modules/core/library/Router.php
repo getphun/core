@@ -77,8 +77,13 @@ class Router
         $gate   = self::$gates[self::$gate];
         $gate_path = $gate['path'];
         
+        $method = $_SERVER['REQUEST_METHOD'];
+        
         foreach($routes as $name => $route){
             if($name == '404')
+                continue;
+            
+            if($route['method'] != 'ANY' && $method != $route['method'])
                 continue;
             
             if(isset($route['rule_arr'])){
@@ -128,7 +133,10 @@ class Router
     static function run(){
         $config_cache_file = BASEPATH . '/etc/cache/routes.php';
         
-        if(ENVIRONMENT === 'development' || !is_file($config_cache_file)){
+        if(is_file($config_cache_file))
+            $config = include $config_cache_file;
+        
+        if(ENVIRONMENT === 'development' || !$config){
             $config = [
                 '_name_gate' => []
             ];
@@ -173,6 +181,10 @@ class Router
                     $route['action'] = isset($handler[1]) ? $handler[1] : 'index';
                     $route['action'].= 'Action';
                     
+                    if(!isset($route['method']))
+                        $route['method'] = 'ANY';
+                    $route['method'] = strtoupper($route['method']);
+                    
                     $routes[$gate][$name] = $route;
                 }
             }
@@ -195,7 +207,6 @@ class Router
             file_put_contents($config_cache_file, $tx);
         }
         
-        $config = include $config_cache_file;
         self::$routes = $config['routes'];
         self::$gates  = $config['gates'];
         self::$config = $config;
