@@ -166,6 +166,12 @@ class Router
                 $gate_path = $gates[$gate]['path'];
                 
                 foreach($rous as $name => $route){
+                    if(isset($route['module'])){
+                        if(!module_exists($route['module'])){
+                            unset($routes[$gate][$name]);
+                            continue;
+                        }
+                    }
                     $route['name'] = $name;
                     if($name != '404'){
                         $config['_name_gate'][$name] = $gate;
