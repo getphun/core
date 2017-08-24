@@ -13,6 +13,7 @@ class Request
     public $method = 'GET';
     public $uri = '/';
     public $ip = '';
+    public $_PUT = null;
     
     public function __construct(){
         $this->method = $this->getServer('REQUEST_METHOD');
@@ -61,6 +62,14 @@ class Request
     }
     
     public function getPost($name, $def=null){
+        if($this->method === 'PUT'){
+            if(is_null($this->_PUT)){
+                parse_str(file_get_contents("php://input"), $put_data);
+                $this->_PUT = $put_data;
+            }
+            return $this->_PUT[$name] ?? $def;
+        }
+        
         return $_POST[$name] ?? $def;
     }
     
