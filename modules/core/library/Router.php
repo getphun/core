@@ -87,7 +87,7 @@ class Router
                 continue;
             
             if(isset($route['rule_arr'])){
-                $temp_route = '';
+                $temp_route = [];
                 
                 foreach($route['rule_arr'] as $index => $part){
                     if(!array_key_exists($index, $path_arr)){
