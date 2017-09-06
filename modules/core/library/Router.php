@@ -132,11 +132,12 @@ class Router
     
     static function run(){
         $config_cache_file = BASEPATH . '/etc/cache/routes.php';
+        $config = null;
         
         if(is_file($config_cache_file))
             $config = include $config_cache_file;
         
-        if(ENVIRONMENT === 'development' || !$config){
+        if(ENVIRONMENT === 'development' || !$config || !isset($config['routes'])){
             $config = [
                 '_name_gate' => []
             ];
@@ -210,7 +211,9 @@ class Router
             $tx = '<?php' . PHP_EOL;
             $tx.= 'return ' . var_export($config, true) . ';';
             
-            file_put_contents($config_cache_file, $tx);
+            $f = fopen($config_cache_file, 'w');
+            fwrite($f, $tx);
+            fclose($f);
         }
         
         self::$routes = $config['routes'];
