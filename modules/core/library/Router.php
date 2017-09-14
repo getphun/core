@@ -67,6 +67,9 @@ class Router
             self::$gate = $name;
             break;
         }
+        
+        if(!self::$gate)
+            self::$gate = 'site';
     }
     
     static private function matchRoutes(){
