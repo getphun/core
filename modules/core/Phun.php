@@ -45,7 +45,10 @@ class Phun
     static private function _config(){
         $config_cache_file = BASEPATH . '/etc/cache/config.php';
         
-        if(!is_file($config_cache_file) || ENVIRONMENT === 'development'){
+        if(is_file($config_cache_file))
+            $module_configs = include $config_cache_file;
+        
+        if(!$module_configs || !is_array($module_configs) || ENVIRONMENT === 'development'){
             $module_dir = BASEPATH . '/modules';
             $modules = array_diff(scandir($module_dir), ['.', '..']);
             
@@ -67,8 +70,6 @@ class Phun
             
             file_put_contents($config_cache_file, $tx);
         }
-        
-        $module_configs = include $config_cache_file;
         
         // get env config
         $env_config     = BASEPATH . '/etc/config.' . ENVIRONMENT . '.php';
