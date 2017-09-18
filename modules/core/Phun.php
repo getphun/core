@@ -45,6 +45,7 @@ class Phun
     static private function _config(){
         $config_cache_file = BASEPATH . '/etc/cache/config.php';
         
+        $module_configs = null;
         if(is_file($config_cache_file))
             $module_configs = include $config_cache_file;
         
@@ -52,7 +53,7 @@ class Phun
             $module_dir = BASEPATH . '/modules';
             $modules = array_diff(scandir($module_dir), ['.', '..']);
             
-            $mod_config = [];
+            $module_configs = [];
             foreach($modules as $mod){
                 $mod_conf_file = $module_dir . '/' . $mod . '/config.php';
                 $mod_conf = include $mod_conf_file;
@@ -62,11 +63,11 @@ class Phun
                     if(substr($key,0,2) !== '__')
                         $mod_conf_used[$key] = $val;
                 }
-                $mod_config = array_replace_recursive($mod_config, $mod_conf_used);
+                $module_configs = array_replace_recursive($module_configs, $mod_conf_used);
             }
             
             $tx = '<?php' . PHP_EOL;
-            $tx.= 'return ' . var_export($mod_config, true) . ';';
+            $tx.= 'return ' . var_export($module_configs, true) . ';';
             
             file_put_contents($config_cache_file, $tx);
         }
