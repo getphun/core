@@ -91,7 +91,7 @@ class Response
         if($this->cache){
             if(!is_dev()){
                 if(!$this->getHeader('Cache-Control'))
-                    $this->addHeader('Cache-Control', 'max-age=120');
+                    $this->addHeader('Cache-Control', 'max-age=60');
                 if(!$this->getHeader('ETag')){
                     $etag = md5($this->res['content']) . '-' . $this->cache;
                     $this->addHeader('ETag',  $etag);

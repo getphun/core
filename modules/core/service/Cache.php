@@ -88,7 +88,7 @@ class Cache
         
         $token = $res['headers']['ETag'] ?? null;
         if(!is_dev() && $token){
-            $max_age = $res['headers']['Cache-Control'] ?? 'max-age=120';
+            $max_age = $res['headers']['Cache-Control'] ?? 'max-age=60';
             
             $tx.= '$token = $_SERVER[\'HTTP_IF_NONE_MATCH\'] ?? NULL;' . $nl;
             $tx.= 'if($token === \''.$token.'\'){' . $nl;
