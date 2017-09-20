@@ -86,8 +86,21 @@ class Cache
         $tx.= 'if(time() > ' . $expired . ')' . $nl;
         $tx.= '    return unlink(__FILE__);' . $nl . $nl;
         
+        $token = $res['headers']['ETag'] ?? null;
+        if(!is_dev() && $token){
+            $max_age = $res['headers']['Cache-Control'] ?? 'max-age=10';
+            
+            $tx.= '$token = $_SERVER[\'HTTP_IF_NONE_MATCH\'] ?? NULL;' . $nl;
+            $tx.= 'if($token === \''.$token.'\'){' . $nl;
+            $tx.= '    http_response_code(304);' . $nl;
+            $tx.= '    header(\'Cache-Control: ' . $max_age . '\');' . $nl;
+            $tx.= '    header(\'ETag: ' . $token . '\');' . $nl;
+            $tx.= '    exit;' . $nl;
+            $tx.= '}' . $nl . $nl;
+        }
+        
         foreach($res['headers'] as $key => $value){
-            if(is_string($value))
+            if(!is_array($value))
                 $tx.= 'header(\'' . $key . ': ' . $value . '\');' . $nl;
             elseif(is_array($value)){
                 foreach($value as $val)

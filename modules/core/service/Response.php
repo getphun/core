@@ -33,7 +33,7 @@ class Response
     
     private function _sendHeader(){
         foreach($this->res['headers'] as $header => $value){
-            if(is_string($value))
+            if(!is_array($value))
                 header($header . ': ' . $value);
             else{
                 $value = array_unique($value);
@@ -60,6 +60,10 @@ class Response
         $this->cache = $expiration;
     }
     
+    public function getHeader($name){
+        return $this->res['headers'][$name] ?? null;
+    }
+    
     public function redirect(String $url, $code=302){
         header('Location: ' . $url, true, $code);
         exit;
@@ -80,8 +84,22 @@ class Response
         if($content)
             $this->res['content'] = $content;
         
-        if($this->cache)
+        // add header Content-Length
+        if(!$this->getHeader('Content-Length'))
+            $this->addHeader('Content-Length', strlen($this->res['content']));
+        
+        if($this->cache){
+            if(!is_dev()){
+                if(!$this->getHeader('Cache-Control'))
+                    $this->addHeader('Cache-Control', 'max-age=10');
+                if(!$this->getHeader('ETag')){
+                    $etag = md5($this->res['content']) . '-' . $this->cache;
+                    $this->addHeader('ETag',  $etag);
+                }
+            }
+            
             \Phun::$dispatcher->cache->save_output($this->res, $this->cache);
+        }
         
         $this->_sendHeader();
         $this->_sendContent();
