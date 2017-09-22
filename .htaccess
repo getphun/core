@@ -10,12 +10,9 @@ RewriteEngine on
 
 RedirectMatch 403 /\..*$
 RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . index.php
-
-## Back to index for direct access of phtml
-RewriteRule ^(.*)\.phtml /index.php
-
+RewriteRule ^(.*)\.(phtml|sql|json) /index.php
+RewriteRule ^etc\/post\/statistic\/([0-9]+)$ /index.php
 RewriteRule ^(.+)/.+\.php /index.php
 
 ## Cache static files
