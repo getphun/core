@@ -69,7 +69,16 @@ class Phun
             $tx = '<?php' . PHP_EOL;
             $tx.= 'return ' . var_export($module_configs, true) . ';';
             
-            file_put_contents($config_cache_file, $tx);
+            touch($config_cache_file);
+            
+            $ctn = file_get_contents($config_cache_file);
+            while($ctn != $tx){
+                $f = fopen($config_cache_file, 'w');
+                fwrite($f, $tx);
+                fclose($f);
+                
+                $ctn = file_get_contents($config_cache_file);
+            }
         }
         
         // get env config

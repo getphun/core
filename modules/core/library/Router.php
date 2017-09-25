@@ -214,9 +214,16 @@ class Router
             $tx = '<?php' . PHP_EOL;
             $tx.= 'return ' . var_export($config, true) . ';';
             
-            $f = fopen($config_cache_file, 'w');
-            fwrite($f, $tx);
-            fclose($f);
+            touch($config_cache_file);
+            
+            $ctn = file_get_contents($config_cache_file);
+            while($ctn != $tx){
+                $f = fopen($config_cache_file, 'w');
+                fwrite($f, $tx);
+                fclose($f);
+                
+                $ctn = file_get_contents($config_cache_file);
+            }
         }
         
         self::$routes = $config['routes'];
