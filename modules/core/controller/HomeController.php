@@ -11,10 +11,7 @@ namespace Core\Controller;
 class HomeController extends \Controller
 {
     public function indexAction(){
-        $params = [
-            'greeting' => 'Let get some phun'
-        ];
-        
+        $params = [];
         $this->respond('index', $params, 10);
     }
     
