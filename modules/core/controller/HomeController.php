@@ -11,7 +11,12 @@ namespace Core\Controller;
 class HomeController extends \Controller
 {
     public function indexAction(){
-        $params = [];
+        $params = [
+            'home' => new \stdClass()
+        ];
+        
+        $params['home']->meta = [];
+        
         $this->respond('index', $params, 10);
     }
     

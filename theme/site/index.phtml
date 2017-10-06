@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <meta charset="utf-8">
-    <title>It works</title>
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->head($home); ?>
+    <?php endif; ?>
 </head>
 <body>
     <h1>Awesome, Let make something</h1>
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->foot($home); ?>
+    <?php endif; ?>
 </body>
 </html>
