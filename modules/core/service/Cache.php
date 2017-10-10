@@ -76,7 +76,7 @@ class Cache
         return true;
     }
     
-    public function save_output($res, $expiration){
+    public function saveOutput($res, $expiration){
         $nl = PHP_EOL;
         $expired = time() + $expiration;
         
@@ -107,7 +107,10 @@ class Cache
                     $tx.= 'header(\'' . $key . ': ' . $val . '\');' . $nl;
             }
         }
-        $tx.= '?>' . $res['content'] . '<?php exit; ?>';
+        $tx.= 'echo <<<KONTENT' . $nl;
+        $tx.= $res['content'] . $nl;
+        $tx.= 'KONTENT;' . $nl;
+        $tx.= 'exit;';
         
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         $f = fopen($cache_file, 'w');

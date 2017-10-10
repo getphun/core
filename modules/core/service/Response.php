@@ -82,7 +82,8 @@ class Response
         }
         
         if($content)
-            $this->res['content'] = $content;
+            $this->res['content'] = trim($content);
+        $this->res['content'] = trim($this->res['content']);
         
         // add header Content-Length
         if(!$this->getHeader('Content-Length'))
@@ -98,7 +99,7 @@ class Response
                 }
             }
             
-            \Phun::$dispatcher->cache->save_output($this->res, $this->cache);
+            \Phun::$dispatcher->cache->saveOutput($this->res, $this->cache);
         }
         
         $this->_sendHeader();
