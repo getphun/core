@@ -10,7 +10,13 @@ namespace Core\Service;
 
 class Router
 {
-
+    public $protocol = 'http';
+    
+    public function __construct(){
+        if(\Phun::$dispatcher->config->secure)
+            $this->protocol = 'https';
+    }
+    
     public function exists($name){
         return isset( \Core\Library\Router::$config['_name_gate'][$name] );
     }
@@ -23,7 +29,7 @@ class Router
         
         $result = '';
         if(isset($gate['host']))
-            $result = 'http://' . $gate['host'];
+            $result = $this->protocol . '://' . $gate['host'];
         
         $result.= $route['rule'];
         

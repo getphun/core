@@ -12,6 +12,7 @@ return [
     'host' => 'cms.phu',
     'timezone' => 'Asia/Jakarta',
     'install' => '2017-05-31 01:05:00',
+    'secure' => false,
     
     '_gates' => [],
     '_routes' => [],
