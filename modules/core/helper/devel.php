@@ -129,3 +129,16 @@ function prop_as_key($arr, $prop){
     
     return $result;
 }
+
+/**
+ * Convert string to slug
+ * @param string $str The string to convert
+ * @return string slug version of the $str
+ */
+function strtoslug($str){
+    $str = strtolower(trim($str));
+    $str = preg_replace('![^a-z0-9]!', '-', $str);
+    $str = preg_replace('!-+!', '-', $str);
+    $str = preg_replace('!^-*|-*$!', '', $str);
+    return $str;
+}
