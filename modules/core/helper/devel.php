@@ -55,6 +55,26 @@ function group_by_prop($arr, $prop){
 }
 
 /**
+ * Group items per columns
+ * @param array list List of object to group
+ * @param integer column Total column / total item per group
+ */
+function group_per_column($list, $column=3){
+    $result = array();
+    
+    $group = 0;
+    foreach($list as $index => $item){
+        if(!array_key_exists($group, $result))
+            $result[$group] = array();
+        $result[$group][$index] = $item;
+        if(count($result[$group]) >= $column)
+            $group++;
+    }
+    
+    return $result;
+}
+
+/**
  * Short-hand for htmlspecialchars
  * @param string str The string to encode
  * @return string encoded $str
