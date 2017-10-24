@@ -15,7 +15,6 @@ return [
     'secure' => false,
     
     '_gates' => [],
-    '_routes' => [],
     
     'query_cache' => [
         'page', 'library'
