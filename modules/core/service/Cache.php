@@ -93,7 +93,6 @@ class Cache
             $tx.= '$token = $_SERVER[\'HTTP_IF_NONE_MATCH\'] ?? NULL;' . $nl;
             $tx.= 'if($token === \''.$token.'\'){' . $nl;
             $tx.= '    http_response_code(304);' . $nl;
-            $tx.= '    header(\'Cache-Control: ' . $max_age . '\');' . $nl;
             $tx.= '    header(\'ETag: ' . $token . '\');' . $nl;
             $tx.= '    exit;' . $nl;
             $tx.= '}' . $nl . $nl;
