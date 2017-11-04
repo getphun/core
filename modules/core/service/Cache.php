@@ -45,6 +45,10 @@ class Cache
     }
     
     public function remove($name){
+        $cache_file = BASEPATH . '/etc/cache/' . $name . '.text';
+        if(is_file($cache_file))
+            unlink($cache_file);
+        
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         if(is_file($cache_file))
             return unlink($cache_file);
@@ -88,8 +92,6 @@ class Cache
         
         $token = $res['headers']['ETag'] ?? null;
         if(!is_dev() && $token){
-            $max_age = $res['headers']['Cache-Control'] ?? 'max-age=60';
-            
             $tx.= '$token = $_SERVER[\'HTTP_IF_NONE_MATCH\'] ?? NULL;' . $nl;
             $tx.= 'if($token === \''.$token.'\'){' . $nl;
             $tx.= '    http_response_code(304);' . $nl;
@@ -106,14 +108,19 @@ class Cache
                     $tx.= 'header(\'' . $key . ': ' . $val . '\');' . $nl;
             }
         }
-        $tx.= 'echo <<<KONTENT' . $nl;
-        $tx.= $res['content'] . $nl;
-        $tx.= 'KONTENT;' . $nl;
+        $tx.= 'echo file_get_contents(__DIR__ . \'/' . $name . '.text\');' . $nl;
         $tx.= 'exit;';
         
+        // php file
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
         $f = fopen($cache_file, 'w');
         fwrite($f, $tx);
+        fclose($f);
+        
+        // text file
+        $cache_file = BASEPATH . '/etc/cache/' . $name . '.text';
+        $f = fopen($cache_file, 'w');
+        fwrite($f, $res['content']);
         fclose($f);
         
         return true;
