@@ -16,6 +16,7 @@ class Phun
     static $req_params = [];
     static $req_uri = '';
     static $req_url = '';
+    static $req_scheme = 'http';
     
     static private function _autoload(){
         if(!isset(self::$config['_autoload']))
@@ -135,9 +136,9 @@ class Phun
         if(!$path)
             $path = '/';
             
-        self::$req_uri = $path;
-        $scheme = self::$config['secure'] ? 'https' : 'http';
-        self::$req_url = $scheme . '://' . $_SERVER['SERVER_NAME'] . $path;
+        self::$req_uri    = $path;
+        self::$req_scheme = self::$config['secure'] ? 'https' : 'http';
+        self::$req_url    = self::$req_scheme . '://' . $_SERVER['SERVER_NAME'] . $path;
     }
     
     static private function _resFromCache(){
