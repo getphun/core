@@ -136,7 +136,8 @@ class Phun
             $path = '/';
             
         self::$req_uri = $path;
-        self::$req_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] . $path;
+        $scheme = self::$config['secure'] ? 'https' : 'http';
+        self::$req_url = $scheme . '://' . $_SERVER['SERVER_NAME'] . $path;
     }
     
     static private function _resFromCache(){
