@@ -14,6 +14,8 @@ class Request
     public $uri = '/';
     public $ip = '';
     public $_INPUT = null;
+    public $_BODY = null;
+    public $_JSON = null;
     
     public function __construct(){
         $this->method = $this->getServer('REQUEST_METHOD');
@@ -29,6 +31,18 @@ class Request
             ?? $this->getQuery($name)
             ?? $this->getFile($name)
             ?? $def;
+    }
+
+    public function getBody($name=null){
+        if(is_null($this->_BODY)){
+            $this->_BODY = file_get_contents("php://input");
+            if(getenv('CONTENT_TYPE') == 'application/json')
+                $this->_JSON = json_decode($this->_BODY);
+        }
+
+        if(is_null($name))
+            return $this->_BODY;
+        return $this->_JSON->$name ?? null;
     }
     
     public function getCookie($name, $def=null){
