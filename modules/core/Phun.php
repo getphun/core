@@ -45,6 +45,16 @@ class Phun
 
     static private function _catchErrors(){
         set_error_handler(function($errno, $errstr, $errfile, $errline){
+            if(!is_dev()){
+                $f = fopen(BASEPATH . '/etc/log/error.log', 'a');
+                $tx = date('Y-m-d H:i:s') . PHP_EOL;
+                $tx.= $errstr . PHP_EOL;
+                $tx.= $errfile . ' ( ' . $errline . ' )' . PHP_EOL;
+                $tx.= PHP_EOL;
+                fwrite($f, $tx);
+                fclose($f);
+            }
+
             $routes = Router::$routes[Router::$gate];
             if(!isset($routes['500']))
                 throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
