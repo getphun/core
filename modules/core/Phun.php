@@ -42,6 +42,22 @@ class Phun
     static private function _bootstrap(){
         
     }
+
+    static private function _catchErrors(){
+        set_error_handler(function($errno, $errstr, $errfile, $errline){
+            $routes = Router::$routes[Router::$gate];
+            if(!isset($routes['500']))
+                throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+
+            $route = $routes['500'];
+
+            $req_ctrl   = $route['controller'];
+            $req_action = $route['action'];
+
+            self::$dispatcher = new $req_ctrl();
+            self::$dispatcher->$req_action($errstr, $errfile, $errline);
+        });
+    }
     
     static private function _config(){
         $config_cache_file = BASEPATH . '/etc/cache/config.php';
@@ -176,6 +192,7 @@ class Phun
         Phun::_timezone();
         Phun::_uri();
         Phun::_resFromCache();
+        Phun::_catchErrors();
         
         self::$services = self::$config['_services'];
         
@@ -188,17 +205,7 @@ class Phun
         $req_action = $req_route['action'];
         
         self::$req_params = $req_params;
-        
-        try{
-            self::$dispatcher = new $req_ctrl();
-            self::$dispatcher->$req_action();
-        }catch(Exception $e){
-            echo $e->getMessage();
-            if(ENVIRONMENT == 'development'){
-                echo '<pre>';
-                echo $e->getTraceAsString();
-                echo '</pre>';
-            }
-        }
+        self::$dispatcher = new $req_ctrl();
+        self::$dispatcher->$req_action();
     }
 }

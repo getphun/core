@@ -83,7 +83,7 @@ class Router
         $method = $_SERVER['REQUEST_METHOD'];
         
         foreach($routes as $name => $route){
-            if($name == '404')
+            if($name == '404' || $name == '500')
                 continue;
             
             if($route['method'] != 'ANY' && $method != $route['method'])
@@ -177,7 +177,7 @@ class Router
                         }
                     }
                     $route['name'] = $name;
-                    if($name != '404'){
+                    if($name != '404' && $name != '500'){
                         $config['_name_gate'][$name] = $gate;
                         
                         $route['rule'] = '/' . trim($gate_path . '/' . trim($route['rule'], '/'), '/');

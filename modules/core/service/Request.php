@@ -36,7 +36,11 @@ class Request
     public function getBody($name=null){
         if(is_null($this->_BODY)){
             $this->_BODY = file_get_contents("php://input");
-            if(getenv('CONTENT_TYPE') == 'application/json')
+            
+            $content_type = strtolower(getenv('CONTENT_TYPE'));
+            $content_type = explode(';', $content_type);
+            $content_type = $content_type[0];
+            if($content_type == 'application/json')
                 $this->_JSON = json_decode($this->_BODY);
         }
 
