@@ -216,6 +216,8 @@ class Phun
         
         self::$req_params = $req_params;
         self::$dispatcher = new $req_ctrl();
+        if(!method_exists(self::$dispatcher, $req_action))
+            return trigger_error('Class ' . $req_ctrl . ' dont have ' . $req_action . ' method');
         self::$dispatcher->$req_action();
     }
 }
