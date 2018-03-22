@@ -29,8 +29,8 @@ class Phun
         
         spl_autoload_register(function($class){
             if(!isset(Phun::$config['_autoload']['classes'][$class]))
-                throw new \Exception('Class ' . $class . ' not registered');
-            
+                return trigger_error('Class ' . $class . ' not registered');
+                
             $file = Phun::$config['_autoload']['classes'][$class];
             include BASEPATH . '/' . $file;
             
