@@ -65,6 +65,7 @@ class Response
     }
     
     public function redirect(String $url, $code=302){
+        $this->_sendHeader();
         header('Location: ' . $url, true, $code);
         exit;
     }
