@@ -7,17 +7,33 @@
  */
 
 namespace Core\Service;
+use Core\Cache\File as CFile;
+use Core\Cache\Redis as CRedis;
 
 class Cache
 {
-    protected $memory = [];
     protected $output_name;
+    protected $driver;
+
+    public function __construct(){
+        $dis = \Phun::$dispatcher;
+        $cache_config = $dis->config->cache;
+
+        switch($cache_config['driver']){
+            case 'file':
+                $this->driver = new CFile();
+                break;
+            case 'redis':
+                $this->driver = new CRedis($cache_config['redis']);
+                break;
+        }
+
+        if(!$this->driver)
+            throw new \Exception('Cache driver is invalid');
+    }
     
     public function get($name){
-        $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
-        if(!is_file($cache_file))
-            return null;
-        return include $cache_file;
+        return $this->driver->get($name);
     }
     
     public function getOutputName(){
@@ -45,6 +61,12 @@ class Cache
     }
     
     public function remove($name){
+        return $this->driver->remove($name);
+    }
+    
+    public function removeOutput($page){
+        $name = 'req-' . md5($page);
+
         $cache_file = BASEPATH . '/etc/cache/' . $name . '.text';
         if(is_file($cache_file))
             unlink($cache_file);
@@ -54,30 +76,8 @@ class Cache
             return unlink($cache_file);
     }
     
-    public function removeOutput($page){
-        $cache_name = 'req-' . md5($page);
-        $this->remove($cache_name);
-    }
-    
     public function save($name, $content, $expiration){
-        $nl = PHP_EOL;
-        $expired = time() + $expiration;
-        
-        $tx = '<?php' . $nl . $nl;
-        $tx.= 'if(time() > ' . $expired . ')' . $nl;
-        $tx.= '    return !unlink(__FILE__);' . $nl;
-        
-        $php = var_export($content, true);
-        $php = str_replace('stdClass::__set_state', '(object)', $php); // Hope my mom never find this.
-        
-        $tx.= 'return ' . $php . ';';
-        
-        $cache_file = BASEPATH . '/etc/cache/' . $name . '.php';
-        $f = fopen($cache_file, 'w');
-        fwrite($f, $tx);
-        fclose($f);
-        
-        return true;
+        return $this->driver->save($name, $content, $expiration);
     }
     
     public function saveOutput($res, $expiration){
@@ -127,15 +127,10 @@ class Cache
     }
     
     public function total(){
-        return count( array_diff( scandir( BASEPATH . '/etc/cache/' ), ['.','..','.gitkeep'] ) );
+        return $this->driver->total();
     }
     
     public function truncate(){
-        $files = array_diff( scandir( BASEPATH . '/etc/cache/' ), ['.', '..', '.gitkeep'] );
-        foreach($files as $file){
-            $file_abs = BASEPATH . '/etc/cache/' . $file;
-            if(is_file($file_abs))
-                unlink($file_abs);
-        }
+        return $this->driver->truncate();
     }
 }

@@ -47,11 +47,23 @@ return [
             'Core\\Service\\Param'              => 'modules/core/service/Param.php',
             'Core\\Service\\Request'            => 'modules/core/service/Request.php',
             'Core\\Service\\Response'           => 'modules/core/service/Response.php',
-            'Core\\Service\\Router'             => 'modules/core/service/Router.php'
+            'Core\\Service\\Router'             => 'modules/core/service/Router.php',
+            'Core\\Cache\\File'                 => 'modules/core/cache/File.php',
+            'Core\\Cache\\Redis'                => 'modules/core/cache/Redis.php'
         ],
         'files'         => [
             'core/devel' => 'modules/core/helper/devel.php',
             'core/page'  => 'modules/core/helper/page.php'
+        ]
+    ],
+
+    'cache' => [
+        'driver' => 'file',
+        'redis' => [
+            'host' => '127.0.0.1',
+            'port' => 6379,
+            'password' => null,
+            'dbindex' => 1
         ]
     ]
     
