@@ -34,6 +34,8 @@ class View
     }
     
     public function asset($file){
+        if(substr($file,0,2) == '//' || substr($file,0,4) == 'http')
+            return $file;
         return '/theme/' . $this->gate . '/static/' . $file;
     }
     
