@@ -33,7 +33,7 @@ class Request
             ?? $def;
     }
 
-    public function getBody($name=null){
+    public function getBody($name=null, $def=null){
         if(is_null($this->_BODY)){
             $this->_BODY = file_get_contents("php://input");
             
@@ -46,7 +46,7 @@ class Request
 
         if(is_null($name))
             return $this->_BODY;
-        return $this->_JSON->$name ?? null;
+        return $this->_JSON->$name ?? $def;
     }
     
     public function getCookie($name, $def=null){
