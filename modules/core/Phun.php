@@ -26,6 +26,11 @@ class Phun
             foreach(self::$config['_autoload']['files'] as $file)
                 include_once BASEPATH . '/' . $file;
         }
+
+        // composer autoload
+        $composer_file = BASEPATH . '/vendor/autoload.php';
+        if(is_file($composer_file))
+            include $composer_file;
         
         spl_autoload_register(function($class){
             if(!isset(Phun::$config['_autoload']['classes'][$class]))
