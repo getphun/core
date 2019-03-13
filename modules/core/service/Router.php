@@ -32,6 +32,9 @@ class Router
             $result = $this->protocol . '://' . $gate['host'];
         
         $result.= $route['rule'];
+
+        $keys = array_map('strlen', array_keys($args));
+        array_multisort($keys, SORT_DESC, $args);
         
         foreach($args as $name => $value){
             if(is_string($value) || is_numeric($value))
